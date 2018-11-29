@@ -1,0 +1,8 @@
+.square{
+    border: 1px solid black;
+    background-color: white;
+    text-align: center;
+}
+.square.bold {
+    background-color: lightgray;
+}
