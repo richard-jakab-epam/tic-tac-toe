@@ -8,6 +8,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      sort: 'asc',
       history: [{
         squares: Array(9).fill(null),
         nextPlayer: 'X',
@@ -42,7 +43,7 @@ class App extends Component {
 
 
   handleClick(i) {
-    const {stepNumber, history} = this.state;
+    const {stepNumber, history, sort} = this.state;
     let squares = history[stepNumber].squares.slice();
     const winner = this.calculateWinner(squares);
 
@@ -62,7 +63,8 @@ class App extends Component {
             description: description
           }
         ]),
-        stepNumber: stepNumber + 1
+        stepNumber: stepNumber + 1,
+        sort: sort
     });
   }
 
@@ -74,6 +76,14 @@ class App extends Component {
     });
   }
 
+  toggleHistorySort() {
+    const sort = this.state.sort === 'asc' ? 'desc' : 'asc';
+    this.setState({
+      ...this.state,
+      sort: sort
+    });
+  }
+
   // get (col, row) position string from square index
   getSquarePosition(squareIdx) {
     let col = (squareIdx % 3) + 1;
@@ -82,7 +92,7 @@ class App extends Component {
   }
 
   render() {
-    const {stepNumber, history} = this.state;
+    const {stepNumber, history, sort} = this.state;
     const squares = history[stepNumber].squares;
     const winner = this.calculateWinner(squares);
     const highLightSquares = winner ? winner.squares : [];
@@ -98,16 +108,26 @@ class App extends Component {
 
     return (
       <div className="game">
-          <Board squares={squares} onClick={this.handleClick.bind(this)} highLight={highLightSquares}/>
+          <Board
+            className="board"
+            squares={squares}
+            onClick={this.handleClick.bind(this)}
+            highLight={highLightSquares}
+          />
           <div className="history">
             <div>{status}</div>
+            <button onClick={this.toggleHistorySort.bind(this)}>
+              Change to {sort === 'asc' ? 'descending' : 'ascending'} order
+            </button>
             <ol>
               {
-                history.map((value, idx) => {
-                  let classes = idx === stepNumber ? 'bold' : '';
+
+                history.map((value, index) => {
+                  const idx = sort === 'asc' ? index : history.length - index - 1;
+                  const classes = idx === stepNumber ? 'bold' : '';
                   return <li key={idx} className={classes}>
                         <button onClick={() => this.moveTo(idx)}>
-                            {(idx === 0) ? 'Game start' : 'move #' + idx + ' - ' +value.description}
+                            {(idx === 0) ? 'Game start' : 'move #' + idx + ' - ' + history[idx].description}
                         </button>
                     </li>
                 })
