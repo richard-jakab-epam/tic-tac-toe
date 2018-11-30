@@ -42,7 +42,7 @@ class App extends Component {
   }
 
 
-  handleClick(i) {
+  handleClick = (i) => {
     const {stepNumber, history, sort} = this.state;
     let squares = history[stepNumber].squares.slice();
     const winner = this.calculateWinner(squares);
@@ -76,7 +76,7 @@ class App extends Component {
     });
   }
 
-  toggleHistorySort() {
+  toggleHistorySort = () => {
     const sort = this.state.sort === 'asc' ? 'desc' : 'asc';
     this.setState({
       ...this.state,
@@ -88,7 +88,7 @@ class App extends Component {
   getSquarePosition(squareIdx) {
     let col = (squareIdx % 3) + 1;
     let row = Math.floor(squareIdx/3) + 1;
-    return '(' + col + ',' + row + ')';
+    return `(${col},${row})`;
   }
 
   render() {
@@ -111,12 +111,12 @@ class App extends Component {
           <Board
             className="board"
             squares={squares}
-            onClick={this.handleClick.bind(this)}
+            onClick={this.handleClick}
             highLight={highLightSquares}
           />
           <div className="history">
             <div>{status}</div>
-            <button onClick={this.toggleHistorySort.bind(this)}>
+            <button onClick={this.toggleHistorySort}>
               Change to {sort === 'asc' ? 'descending' : 'ascending'} order
             </button>
             <ol>
