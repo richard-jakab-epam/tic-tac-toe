@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import Square from './Square';
 import './Board.css';
 
@@ -7,11 +8,13 @@ export default function Board(props) {
         <div className="board">
         {
             props.squares.map((value, index) => {
-                const className =  props.highLight.indexOf(index) !== -1 ? 'bold' : '';
+                const classes = classnames({
+                    bold: props.highLight.indexOf(index) !== -1
+                });
                 return <Square
                     key={index}
                     value={value}
-                    className={className}
+                    className={classes}
                     onClick={() => props.onClick(index)}/>
             })
         }

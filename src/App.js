@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import './App.css';
 
 import Board from './Board';
@@ -101,7 +102,7 @@ class App extends Component {
     if (winner) {
         status = 'Winner: ' + winner.player;
     } else if (stepNumber < 9){
-        status = 'Next player: ' + history[stepNumber].nextPlayer;
+        status = `Next player: ${history[stepNumber].nextPlayer}`;
     } else {
         status = 'Result being a draw';
     }
@@ -124,10 +125,12 @@ class App extends Component {
 
                 history.map((value, index) => {
                   const idx = sort === 'asc' ? index : history.length - index - 1;
-                  const classes = idx === stepNumber ? 'bold' : '';
+                  const classes = classnames({
+                    bold: idx === stepNumber
+                  });
                   return <li key={idx} className={classes}>
                         <button onClick={() => this.moveTo(idx)}>
-                            {(idx === 0) ? 'Game start' : 'move #' + idx + ' - ' + history[idx].description}
+                            {(idx === 0) ? 'Game start' : `move #${idx} - ${history[idx].description}`}
                         </button>
                     </li>
                 })
